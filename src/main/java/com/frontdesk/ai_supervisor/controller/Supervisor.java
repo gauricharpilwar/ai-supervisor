@@ -34,6 +34,9 @@ public class Supervisor {
         entry.setQuestion(request.getQuestion());
         entry.setAnswer(answer);
         knowledgeBaseRepository.save(entry);
+
+        System.out.println("AI (to " + request.getCallerName() + "): " + answer);
+
         return "Resolved! The caller can now be notified.";
     }
 }
