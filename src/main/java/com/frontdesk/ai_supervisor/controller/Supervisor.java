@@ -50,5 +50,4 @@ public class Supervisor {
     }
 }
 
-// KnowledgeController.java (new)
 

@@ -10,9 +10,10 @@ public class Calls {
     private final AiService aiService;
     public Calls(AiService aiService){ this.aiService = aiService; }
 
-    // used by the "Seed" button from the UI
-    @PostMapping
-    public String simulateCall(@RequestParam String question, @RequestParam String callerName) {
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
+    public String simulateCall(
+            @RequestParam String question,
+            @RequestParam String callerName) {
         return aiService.handleCall(question, callerName);
     }
 }
