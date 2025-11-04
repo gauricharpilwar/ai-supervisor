@@ -12,20 +12,22 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+// SupervisorController.java (additions)
 @RestController
 @RequestMapping("/supervisor")
 public class Supervisor {
     private final HelpRequestRepository helpRequestRepository;
     private final KnowledgeBaseRepository knowledgeBaseRepository;
 
-    public Supervisor(HelpRequestRepository helpRequestRepository, KnowledgeBaseRepository knowledgeBaseRepository){
+    public Supervisor(HelpRequestRepository helpRequestRepository, KnowledgeBaseRepository knowledgeBaseRepository) {
         this.helpRequestRepository = helpRequestRepository;
         this.knowledgeBaseRepository = knowledgeBaseRepository;
     }
 
     @PostMapping("/resolve")
     public String resolveRequest(@RequestParam Long requestId, @RequestParam String answer) {
-        Helprequest request = helpRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
+        Helprequest request = helpRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
         request.setStatus("RESOLVED");
         request.setResolvedAt(LocalDateTime.now());
         helpRequestRepository.save(request);
@@ -35,8 +37,18 @@ public class Supervisor {
         entry.setAnswer(answer);
         knowledgeBaseRepository.save(entry);
 
-        System.out.println("AI (to " + request.getCallerName() + "): " + answer);
+        return "Resolved";
+    }
 
-        return "Resolved! The caller can now be notified.";
+    @PostMapping("/unresolve")
+    public String unresolve(@RequestParam Long requestId) {
+        Helprequest request = helpRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
+        request.setStatus("UNRESOLVED");
+        helpRequestRepository.save(request);
+        return "Unresolved";
     }
 }
+
+// KnowledgeController.java (new)
+
