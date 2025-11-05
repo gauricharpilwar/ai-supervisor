@@ -52,10 +52,6 @@ header .left {
   gap: 10px;
 }
 
-.logo {
-  height: 32px;
-}
-
 header .right {
   display: flex;
   align-items: center;

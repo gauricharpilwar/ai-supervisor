@@ -88,6 +88,7 @@ Activity → Recent logs
 ## 🧪 API Usage & Testing
 
 1. Trigger AI Call (simulate incoming customer call)
+ eg:
    GET /calls?callerName=John&question=Do%20you%20offer%20haircut%20services?
 
 Response (if unknown):
@@ -111,17 +112,6 @@ GET /calls?callerName=Maria&question=Do%20you%20offer%20haircut%20services?
 
 Response (auto-answered from KB):
 AI: Yes, we offer haircut services starting ₹300.
-
----
-
-## 🎥 Demo Recording
-
-You can create a demo video including:
-
-- App startup
-- Simulating a call (API/send button)
-- Resolving via UI
-- Showing learned result
 
 ---
 

@@ -5,14 +5,13 @@ import com.frontdesk.ai_supervisor.model.KnowledgebaseEntry;
 import com.frontdesk.ai_supervisor.repository.HelpRequestRepository;
 import com.frontdesk.ai_supervisor.repository.KnowledgeBaseRepository;
 import org.springframework.web.bind.annotation.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-// SupervisorController.java (additions)
 @RestController
 @RequestMapping("/supervisor")
 public class Supervisor {
@@ -25,19 +24,26 @@ public class Supervisor {
     }
 
     @PostMapping("/resolve")
-    public String resolveRequest(@RequestParam Long requestId, @RequestParam String answer) {
-        Helprequest request = helpRequestRepository.findById(requestId)
+    public String resolveRequest(@RequestBody ResolveRequest request) {
+        Helprequest helpRequest = helpRequestRepository.findById(request.getRequestId())
                 .orElseThrow(() -> new RuntimeException("Request not found"));
-        request.setStatus("RESOLVED");
-        request.setResolvedAt(LocalDateTime.now());
-        helpRequestRepository.save(request);
+
+        helpRequest.setStatus("RESOLVED");
+        helpRequest.setResolvedAt(LocalDateTime.now());
+        helpRequestRepository.save(helpRequest);
 
         KnowledgebaseEntry entry = new KnowledgebaseEntry();
-        entry.setQuestion(request.getQuestion());
-        entry.setAnswer(answer);
+        entry.setQuestion(helpRequest.getQuestion());
+        entry.setAnswer(request.getAnswer());
         knowledgeBaseRepository.save(entry);
 
         return "Resolved";
+    }
+
+    @Data
+    public static class ResolveRequest {
+        private Long requestId;
+        private String answer;
     }
 
     @PostMapping("/unresolve")

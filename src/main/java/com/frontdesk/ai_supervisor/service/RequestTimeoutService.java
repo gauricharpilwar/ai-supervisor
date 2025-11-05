@@ -16,7 +16,6 @@ public class RequestTimeoutService {
         this.helpRequestRepository = helpRequestRepository;
     }
 
-    // Check for timeouts every 5 minutes
     @Scheduled(fixedRate = 300000)
     public void checkForTimeouts() {
         List<Helprequest> pendingRequests = helpRequestRepository.findAll()
