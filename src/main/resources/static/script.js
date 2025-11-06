@@ -114,13 +114,33 @@ function renderKB(){
   `;
 }
 
-async function resolveReq(id, fromModal=false){
-  const v = fromModal ? $('modalAnswer').value : ($('ans'+id)?.value||'');
-  if(!v){ toast('Enter an answer'); return; }
-  await fetch(`/supervisor/resolve?requestId=${id}&answer=${encodeURIComponent(v)}`, { method:'POST' });
-  log(`Resolved #${id}: ${v}`); toast('Resolved and saved to KB');
-  $('modal').style.display='none';
-  await loadRequests(); await loadKB();
+async function resolveReq(id, fromModal = false) {
+  const answerValue = fromModal ? $('modalAnswer').value : ($('ans' + id)?.value || '');
+
+  if (!answerValue) {
+    toast('Enter an answer');
+    return;
+  }
+
+  const payload = {
+    requestId: id,
+    answer: answerValue
+  };
+
+  await fetch('/supervisor/resolve', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  log(`Resolved #${id}: ${answerValue}`);
+  toast('Resolved and saved to KB');
+
+  $('modal').style.display = 'none';
+  await loadRequests();
+  await loadKB();
 }
 
 async function unresolveReq(id){
