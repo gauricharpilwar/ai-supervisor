@@ -128,7 +128,4 @@ This project is intended for educational/demo purposes.
 ---
 
 Let me know if you’d like help:
-- Uploading this to GitHub
-- Including screenshots or video links in the README
-- Adding badges or footer sections!
 
